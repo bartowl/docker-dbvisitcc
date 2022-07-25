@@ -1,8 +1,10 @@
 #!/bin/sh
-if ! [ -l /usr/dbvisit/standbymp/db ]; then
+if ! [ -L /usr/dbvisit/standbymp/db ]; then
   if [ -d /usr/dbvisit/persistent/db ]; then
     echo "Using persisted settings from from external volume..."
-    rm -rf /usr/dbvisit/standbymp/{certificates,conf,db}
+    rm -rf /usr/dbvisit/standbymp/certificates
+    rm -rf /usr/dbvisit/standbymp/conf
+    rm -rf /usr/dbvisit/standbymp/db
     AGENT_PASSWORD="persisted, do not re-generate"
   else
     echo "First-time execution, preparing persistent storage from template..."
@@ -10,9 +12,9 @@ if ! [ -l /usr/dbvisit/standbymp/db ]; then
     mv /usr/dbvisit/standbymp/conf /usr/dbvisit/persistent
     mv /usr/dbvisit/standbymp/db /usr/dbvisit/persistent
   fi
-  ln -s /usr/dbvisit/persistent/certificates /usr/dbvisit/standbymp/certificates
-  ln -s /usr/dbvisit/persistent/conf /usr/dbvisit/standbymp/conf
-  ln -s /usr/dbvisit/persistent/db /usr/dbvisit/standbymp/db
+  ln -s /usr/dbvisit/persistent/certificates /usr/dbvisit/standbymp
+  ln -s /usr/dbvisit/persistent/conf /usr/dbvisit/standbymp
+  ln -s /usr/dbvisit/persistent/db /usr/dbvisit/standbymp
   if [ -z "$AGENT_PASSWORD" ]; then
     AGENT_PASSWORD=$(echo date | sha256sum | base64 | head -c 32)
     echo "Generated Agent Password: $AGENT_PASSWORD"
