@@ -7,7 +7,7 @@ RUN [ -f *gz ] && gunzip *gz || true
 RUN [ -f *tar ] && tar xf *tar || true
 RUN mkdir /usr/dbvisit
 RUN apk add libc6-compat strace
-RUN chmod 755 ./install-control-v11.1.0 && ./install-control-v11.1.0 -batch -passphrase dummy-please-ignore
+RUN chmod 755 ./install-control-v* && ./install-control-v* -batch -passphrase dummy-please-ignore
 
 FROM alpine:3.15.5
 MAINTAINER bartowl gitbub@bartowl.eu
